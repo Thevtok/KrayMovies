@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as https from 'https';
+import { userAgent } from './config';
 import { NextFunction as Next, Request, Response } from 'express';
 import { scrapeMovieDetails, scrapeMovies } from '@/scrapers/movie';
 
@@ -17,8 +18,7 @@ export const latestMovies: TController = async (req, res) => {
         const { page = 0 } = req.query;
 
         const headers = {
-            'User-Agent':
-                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Firefox/68.0',
+            'User-Agent': userAgent,
             // Header lain sesuai kebutuhan
         };
 
@@ -54,11 +54,21 @@ export const latestMovies: TController = async (req, res) => {
 export const popularMovies: TController = async (req, res) => {
     try {
         const { page = 0 } = req.query;
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
 
         const axiosRequest = await axios.get(
             `${process.env.LK21_URL}/populer${
                 Number(page) > 1 ? `/page/${page}` : ''
-            }`
+            }`,
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
+            }
         );
 
         // scrape popular movies
@@ -81,11 +91,21 @@ export const popularMovies: TController = async (req, res) => {
 export const recentReleaseMovies: TController = async (req, res) => {
     try {
         const { page = 0 } = req.query;
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
 
         const axiosRequest = await axios.get(
             `${process.env.LK21_URL}/release${
                 Number(page) > 1 ? `/page/${page}` : ''
-            }`
+            }`,
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
+            }
         );
 
         const payload = await scrapeMovies(req, axiosRequest);
@@ -107,11 +127,21 @@ export const recentReleaseMovies: TController = async (req, res) => {
 export const topRatedMovies: TController = async (req, res) => {
     try {
         const { page = 0 } = req.query;
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
 
         const axiosRequest = await axios.get(
             `${process.env.LK21_URL}/rating${
                 Number(page) > 1 ? `/page/${page}` : ''
-            }`
+            }`,
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
+            }
         );
 
         const payload = await scrapeMovies(req, axiosRequest);
@@ -133,8 +163,17 @@ export const topRatedMovies: TController = async (req, res) => {
 export const movieDetails: TController = async (req, res) => {
     try {
         const { id } = req.params;
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
 
-        const axiosRequest = await axios.get(`${process.env.LK21_URL}/${id}`);
+        const axiosRequest = await axios.get(`${process.env.LK21_URL}/${id}`, {
+            httpsAgent: new https.Agent({
+                rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+            }),
+            headers: headers, // Menambahkan headers ke permintaan
+        });
 
         const payload = await scrapeMovieDetails(req, axiosRequest);
 
