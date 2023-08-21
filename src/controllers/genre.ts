@@ -1,4 +1,6 @@
 import axios from 'axios';
+import * as https from 'https';
+import { userAgent } from './config';
 import { NextFunction as Next, Request, Response } from 'express';
 import { scrapeSetOfGenres } from '@/scrapers/genre';
 import { scrapeMovies } from '@/scrapers/movie';
@@ -13,7 +15,16 @@ type TController = (req: Request, res: Response, next?: Next) => Promise<void>;
  */
 export const setOfGenres: TController = async (req, res) => {
     try {
-        const axiosRequest = await axios.get(`${process.env.LK21_URL}`);
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
+        const axiosRequest = await axios.get(`${process.env.LK21_URL}`, {
+            httpsAgent: new https.Agent({
+                rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+            }),
+            headers: headers, // Menambahkan headers ke permintaan
+        });
 
         const payload = await scrapeSetOfGenres(req, axiosRequest);
 
@@ -33,13 +44,23 @@ export const setOfGenres: TController = async (req, res) => {
  */
 export const moviesByGenre: TController = async (req, res) => {
     try {
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
         const { page = 0 } = req.query;
         const { genre } = req.params;
 
         const axiosRequest = await axios.get(
             `${process.env.LK21_URL}/genre/${genre.toLowerCase()}${
                 Number(page) > 1 ? `/page/${page}` : ''
-            }`
+            }`,
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
+            }
         );
 
         const payload = await scrapeMovies(req, axiosRequest);

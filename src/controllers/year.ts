@@ -1,4 +1,6 @@
 import axios from 'axios';
+import * as https from 'https';
+import { userAgent } from './config';
 import { NextFunction as Next, Request, Response } from 'express';
 import { scrapeMovies } from '@/scrapers/movie';
 import { scrapeSetOfYears } from '@/scrapers/year';
@@ -13,8 +15,19 @@ type TController = (req: Request, res: Response, next?: Next) => Promise<void>;
  */
 export const setOfYears: TController = async (req, res) => {
     try {
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
+
         const axiosRequest = await axios.get(
-            `${process.env.LK21_URL}/rekomendasi-film-pintar`
+            `${process.env.LK21_URL}/rekomendasi-film-pintar`,
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
+            }
         );
 
         const payload = await scrapeSetOfYears(req, axiosRequest);
@@ -35,13 +48,24 @@ export const setOfYears: TController = async (req, res) => {
  */
 export const moviesByYear: TController = async (req, res) => {
     try {
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
+
         const { page = 0 } = req.query;
         const { year } = req.params;
 
         const axiosRequest = await axios.get(
             `${process.env.LK21_URL}/year/${year}${
                 Number(page) > 1 ? `/page/${page}` : ''
-            }`
+            }`,
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
+            }
         );
 
         const payload = await scrapeMovies(req, axiosRequest);

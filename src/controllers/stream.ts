@@ -1,4 +1,6 @@
 import axios from 'axios';
+import * as https from 'https';
+import { userAgent } from './config';
 import { NextFunction as Next, Request, Response } from 'express';
 import { scrapeStreamSources } from '@/scrapers/stream';
 
@@ -12,12 +14,22 @@ type TController = (req: Request, res: Response, next?: Next) => Promise<void>;
  */
 export const streamMovie: TController = async (req, res) => {
     try {
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
         const { originalUrl } = req;
 
         const movieId = originalUrl.split('/').reverse()[1];
 
         const axiosRequest = await axios.get(
-            `${process.env.LK21_URL}/${movieId}`
+            `${process.env.LK21_URL}/${movieId}`,
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
+            }
         );
 
         const payload = await scrapeStreamSources(req, axiosRequest);
@@ -38,6 +50,10 @@ export const streamMovie: TController = async (req, res) => {
  */
 export const streamSeries: TController = async (req, res) => {
     try {
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
         const { originalUrl } = req;
         const { season = 1, episode = 1 } = req.query;
 
@@ -47,7 +63,13 @@ export const streamSeries: TController = async (req, res) => {
         const seriesId = _ids.join('-');
 
         const axiosRequest = await axios.get(
-            `${process.env.ND_URL}/${seriesId}-season-${season}-episode-${episode}-${year}`
+            `${process.env.ND_URL}/${seriesId}-season-${season}-episode-${episode}-${year}`,
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
+            }
         );
 
         const payload = await scrapeStreamSources(req, axiosRequest);

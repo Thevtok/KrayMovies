@@ -1,4 +1,6 @@
 import axios from 'axios';
+import * as https from 'https';
+import { userAgent } from './config';
 import { NextFunction as Next, Request, Response } from 'express';
 import { scrapeSeries, scrapeSeriesDetails } from '@/scrapers/series';
 
@@ -12,12 +14,22 @@ type TController = (req: Request, res: Response, next?: Next) => Promise<void>;
  */
 export const latestSeries: TController = async (req, res) => {
     try {
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
         const { page = 0 } = req.query;
 
         const axiosRequest = await axios.get(
             `${process.env.ND_URL}/latest-series${
                 Number(page) > 1 ? `/page/${page}` : ''
-            }`
+            }`,
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
+            }
         );
 
         const payload = await scrapeSeries(req, axiosRequest);
@@ -38,12 +50,22 @@ export const latestSeries: TController = async (req, res) => {
  */
 export const popularSeries: TController = async (req, res) => {
     try {
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
         const { page = 0 } = req.query;
 
         const axiosRequest = await axios.get(
             `${process.env.ND_URL}/populer${
                 Number(page) > 1 ? `/page/${page}` : ''
-            }`
+            }`,
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
+            }
         );
 
         const payload = await scrapeSeries(req, axiosRequest);
@@ -64,12 +86,22 @@ export const popularSeries: TController = async (req, res) => {
  */
 export const recentReleaseSeries: TController = async (req, res) => {
     try {
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
         const { page = 0 } = req.query;
 
         const axiosRequest = await axios.get(
             `${process.env.ND_URL}/release${
                 Number(page) > 1 ? `/page/${page}` : ''
-            }`
+            }`,
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
+            }
         );
 
         const payload = await scrapeSeries(req, axiosRequest);
@@ -90,12 +122,22 @@ export const recentReleaseSeries: TController = async (req, res) => {
  */
 export const topRatedSeries: TController = async (req, res) => {
     try {
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
         const { page = 0 } = req.query;
 
         const axiosRequest = await axios.get(
             `${process.env.ND_URL}/rating${
                 Number(page) > 1 ? `/page/${page}` : ''
-            }`
+            }`,
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
+            }
         );
 
         const payload = await scrapeSeries(req, axiosRequest);
@@ -116,9 +158,18 @@ export const topRatedSeries: TController = async (req, res) => {
  */
 export const seriesDetails: TController = async (req, res) => {
     try {
+        const headers = {
+            'User-Agent': userAgent,
+            // Header lain sesuai kebutuhan
+        };
         const { id } = req.params;
 
-        const axiosRequest = await axios.get(`${process.env.ND_URL}/${id}`);
+        const axiosRequest = await axios.get(`${process.env.ND_URL}/${id}`, {
+            httpsAgent: new https.Agent({
+                rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+            }),
+            headers: headers, // Menambahkan headers ke permintaan
+        });
 
         const payload = await scrapeSeriesDetails(req, axiosRequest);
 
