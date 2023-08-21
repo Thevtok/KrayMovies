@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as https from 'https';
 import { NextFunction as Next, Request, Response } from 'express';
 import { scrapeMovieDetails, scrapeMovies } from '@/scrapers/movie';
 
@@ -10,14 +11,20 @@ type TController = (req: Request, res: Response, next?: Next) => Promise<void>;
  * @param {Response} res
  * @param {Next} next
  */
-export const latestMovies: TController = async (req, res) => {
+ export const latestMovies: TController = async (req, res) => {
     try {
         const { page = 0 } = req.query;
 
+        // Set opsi untuk mengabaikan verifikasi SSL
         const axiosRequest = await axios.get(
             `${process.env.LK21_URL}/latest${
                 Number(page) > 1 ? `/page/${page}` : ''
-            }`
+            }`, 
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false  // Ini akan mengabaikan verifikasi SSL
+                })
+            }
         );
 
         const payload = await scrapeMovies(req, axiosRequest);
