@@ -11,19 +11,27 @@ type TController = (req: Request, res: Response, next?: Next) => Promise<void>;
  * @param {Response} res
  * @param {Next} next
  */
- export const latestMovies: TController = async (req, res) => {
+
+export const latestMovies: TController = async (req, res) => {
     try {
         const { page = 0 } = req.query;
+
+        const headers = {
+            'User-Agent':
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Firefox/68.0',
+            // Header lain sesuai kebutuhan
+        };
 
         // Set opsi untuk mengabaikan verifikasi SSL
         const axiosRequest = await axios.get(
             `${process.env.LK21_URL}/latest${
                 Number(page) > 1 ? `/page/${page}` : ''
-            }`, 
+            }`,
             {
                 httpsAgent: new https.Agent({
-                    rejectUnauthorized: false  // Ini akan mengabaikan verifikasi SSL
-                })
+                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+                }),
+                headers: headers, // Menambahkan headers ke permintaan
             }
         );
 
