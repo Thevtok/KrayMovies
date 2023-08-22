@@ -51,13 +51,13 @@ export const moviesByCountry: TController = async (req, res) => {
             'User-Agent': userAgent,
             // Header lain sesuai kebutuhan
         };
-        const { page = 0 } = req.query;
+        const { page = 0 } = req.params;
         const { country } = req.params;
 
         const axiosRequest = await axios.get(
-            `${process.env.LK21_URL}/country/${country.toLowerCase()}${
-                Number(page) > 1 ? `/page/${page}` : ''
-            }`,
+            `${
+                process.env.LK21_URL
+            }/country/${country.toLowerCase()}/page/${page}`,
             {
                 httpsAgent: new https.Agent({
                     rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL

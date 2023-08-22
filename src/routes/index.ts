@@ -24,26 +24,26 @@ import {
 const router: IRouter = Router();
 
 router.get('/movies/:page', latestMovies);
-router.get('/popular/movies', popularMovies);
-router.get('/recent-release/movies', recentReleaseMovies);
-router.get('/top-rated/movies', topRatedMovies);
+router.get('/popular/movies/:page', popularMovies);
+router.get('/recent-release/movies/:page', recentReleaseMovies);
+router.get('/top-rated/movies/:page', topRatedMovies);
 router.get('/movies/:id', movieDetails);
 
 router.get('/movies/:id/streams', streamMovie);
 
 router.get('/genres', setOfGenres);
-router.get('/genres/:genre', moviesByGenre);
+router.get('/genres/:genre/:page', moviesByGenre);
 
 router.get('/countries', setOfCountries);
-router.get('/countries/:country', moviesByCountry);
+router.get('/countries/:country/:page', moviesByCountry);
 
 router.get('/years', setOfYears);
-router.get('/years/:year', moviesByYear);
+router.get('/years/:year/:page', moviesByYear);
 
 router.get('/series/:page', latestSeries);
-router.get('/popular/series', popularSeries);
-router.get('/recent-release/series', recentReleaseSeries);
-router.get('/top-rated/series', topRatedSeries);
+router.get('/popular/series/:page', popularSeries);
+router.get('/recent-release/series/:page', recentReleaseSeries);
+router.get('/top-rated/series/:page', topRatedSeries);
 router.get('/series/:id', seriesDetails);
 
 router.get('/series/:id/streams', streamSeries);

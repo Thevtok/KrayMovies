@@ -54,12 +54,10 @@ export const popularSeries: TController = async (req, res) => {
             'User-Agent': userAgent,
             // Header lain sesuai kebutuhan
         };
-        const { page = 0 } = req.query;
+        const { page = 0 } = req.params;
 
         const axiosRequest = await axios.get(
-            `${process.env.ND_URL}/populer${
-                Number(page) > 1 ? `/page/${page}` : ''
-            }`,
+            `${process.env.ND_URL}/populer/page/${page}`,
             {
                 httpsAgent: new https.Agent({
                     rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
@@ -90,12 +88,10 @@ export const recentReleaseSeries: TController = async (req, res) => {
             'User-Agent': userAgent,
             // Header lain sesuai kebutuhan
         };
-        const { page = 0 } = req.query;
+        const { page = 0 } = req.params;
 
         const axiosRequest = await axios.get(
-            `${process.env.ND_URL}/release${
-                Number(page) > 1 ? `/page/${page}` : ''
-            }`,
+            `${process.env.ND_URL}/release/page/${page}`,
             {
                 httpsAgent: new https.Agent({
                     rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
@@ -126,12 +122,10 @@ export const topRatedSeries: TController = async (req, res) => {
             'User-Agent': userAgent,
             // Header lain sesuai kebutuhan
         };
-        const { page = 0 } = req.query;
+        const { page = 0 } = req.params;
 
         const axiosRequest = await axios.get(
-            `${process.env.ND_URL}/rating${
-                Number(page) > 1 ? `/page/${page}` : ''
-            }`,
+            `${process.env.ND_URL}/rating/page/${page}`,
             {
                 httpsAgent: new https.Agent({
                     rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL

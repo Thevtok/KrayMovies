@@ -50,16 +50,14 @@ export const latestMovies: TController = async (req, res) => {
  */
 export const popularMovies: TController = async (req, res) => {
     try {
-        const { page = 0 } = req.query;
+        const { page = 0 } = req.params;
         const headers = {
             'User-Agent': userAgent,
             // Header lain sesuai kebutuhan
         };
 
         const axiosRequest = await axios.get(
-            `${process.env.LK21_URL}/populer${
-                Number(page) > 1 ? `/page/${page}` : ''
-            }`,
+            `${process.env.LK21_URL}/populer/page/${page}`,
             {
                 httpsAgent: new https.Agent({
                     rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
@@ -87,16 +85,14 @@ export const popularMovies: TController = async (req, res) => {
  */
 export const recentReleaseMovies: TController = async (req, res) => {
     try {
-        const { page = 0 } = req.query;
+        const { page = 0 } = req.params;
         const headers = {
             'User-Agent': userAgent,
             // Header lain sesuai kebutuhan
         };
 
         const axiosRequest = await axios.get(
-            `${process.env.LK21_URL}/release${
-                Number(page) > 1 ? `/page/${page}` : ''
-            }`,
+            `${process.env.LK21_URL}/release/page/${page}`,
             {
                 httpsAgent: new https.Agent({
                     rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
@@ -123,16 +119,14 @@ export const recentReleaseMovies: TController = async (req, res) => {
  */
 export const topRatedMovies: TController = async (req, res) => {
     try {
-        const { page = 0 } = req.query;
+        const { page = 0 } = req.params;
         const headers = {
             'User-Agent': userAgent,
             // Header lain sesuai kebutuhan
         };
 
         const axiosRequest = await axios.get(
-            `${process.env.LK21_URL}/rating${
-                Number(page) > 1 ? `/page/${page}` : ''
-            }`,
+            `${process.env.LK21_URL}/rating/page/${page}`,
             {
                 httpsAgent: new https.Agent({
                     rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL

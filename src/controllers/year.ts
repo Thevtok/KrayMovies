@@ -53,13 +53,11 @@ export const moviesByYear: TController = async (req, res) => {
             // Header lain sesuai kebutuhan
         };
 
-        const { page = 0 } = req.query;
+        const { page = 0 } = req.params;
         const { year } = req.params;
 
         const axiosRequest = await axios.get(
-            `${process.env.LK21_URL}/year/${year}${
-                Number(page) > 1 ? `/page/${page}` : ''
-            }`,
+            `${process.env.LK21_URL}/year/${year}/page/${page}`,
             {
                 httpsAgent: new https.Agent({
                     rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
