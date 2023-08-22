@@ -21,7 +21,7 @@ export const searchedMoviesOrSeries: TController = async (req, res) => {
         const { title = '' } = req.params;
 
         const axiosRequest = await axios.get(
-            `${process.env.LK21_URL}/?s=${title}`,
+            `${process.env.ND_URL}/?s=${title}`,
             {
                 httpsAgent: new https.Agent({
                     rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
