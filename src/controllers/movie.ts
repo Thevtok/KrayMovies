@@ -12,7 +12,6 @@ type TController = (req: Request, res: Response, next?: Next) => Promise<void>;
  * @param {Response} res
  * @param {Next} next
  */
-
 export const latestMovies: TController = async (req, res) => {
     try {
         const { page = 0 } = req.query;
@@ -22,18 +21,18 @@ export const latestMovies: TController = async (req, res) => {
             // Header lain sesuai kebutuhan
         };
 
+        // Membuat URL dengan parameter page
+        const url = `${process.env.LK21_URL}/latest${
+            Number(page) > 1 ? `/page/${page}` : ''
+        }`;
+
         // Set opsi untuk mengabaikan verifikasi SSL
-        const axiosRequest = await axios.get(
-            `${process.env.LK21_URL}/latest${
-                Number(page) > 1 ? `/page/${page}` : ''
-            }`,
-            {
-                httpsAgent: new https.Agent({
-                    rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
-                }),
-                headers: headers, // Menambahkan headers ke permintaan
-            }
-        );
+        const axiosRequest = await axios.get(url, {
+            httpsAgent: new https.Agent({
+                rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
+            }),
+            headers: headers, // Menambahkan headers ke permintaan
+        });
 
         const payload = await scrapeMovies(req, axiosRequest);
 

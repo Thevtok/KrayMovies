@@ -18,7 +18,8 @@ export const latestSeries: TController = async (req, res) => {
             'User-Agent': userAgent,
             // Header lain sesuai kebutuhan
         };
-        const { page = 0 } = req.query;
+
+        const { page = 0 } = req.params; // Mengambil nilai page dari params
 
         const axiosRequest = await axios.get(
             `${process.env.ND_URL}/latest-series${
