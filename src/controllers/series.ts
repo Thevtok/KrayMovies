@@ -152,18 +152,9 @@ export const topRatedSeries: TController = async (req, res) => {
  */
 export const seriesDetails: TController = async (req, res) => {
     try {
-        const headers = {
-            'User-Agent': userAgent,
-            // Header lain sesuai kebutuhan
-        };
         const { id } = req.params;
 
-        const axiosRequest = await axios.get(`${process.env.ND_URL}/${id}`, {
-            httpsAgent: new https.Agent({
-                rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL
-            }),
-            headers: headers, // Menambahkan headers ke permintaan
-        });
+        const axiosRequest = await axios.get(`${process.env.ND_URL}/${id}`);
 
         const payload = await scrapeSeriesDetails(req, axiosRequest);
 
