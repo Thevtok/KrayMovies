@@ -23,7 +23,7 @@ import {
 
 const router: IRouter = Router();
 
-router.get('/movies/:page', latestMovies);
+router.get('/movies/latest/:page', latestMovies);
 router.get('/popular/movies/:page', popularMovies);
 router.get('/recent-release/movies/:page', recentReleaseMovies);
 router.get('/top-rated/movies/:page', topRatedMovies);
@@ -40,7 +40,7 @@ router.get('/countries/:country/:page', moviesByCountry);
 router.get('/years', setOfYears);
 router.get('/years/:year/:page', moviesByYear);
 
-router.get('/series/:page', latestSeries);
+router.get('/series/latest/:page', latestSeries);
 router.get('/popular/series/:page', popularSeries);
 router.get('/recent-release/series/:page', recentReleaseSeries);
 router.get('/top-rated/series/:page', topRatedSeries);
