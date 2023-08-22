@@ -14,7 +14,7 @@ type TController = (req: Request, res: Response, next?: Next) => Promise<void>;
  */
 export const latestMovies: TController = async (req, res) => {
     try {
-        const { page = 0 } = req.query;
+        const { page = 0 } = req.params;
 
         const headers = {
             'User-Agent': userAgent,
