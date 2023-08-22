@@ -12,6 +12,7 @@ type TController = (req: Request, res: Response, next?: Next) => Promise<void>;
  * @param {Response} res
  * @param {Next} next
  */
+
 export const latestSeries: TController = async (req, res) => {
     try {
         const headers = {
@@ -22,9 +23,7 @@ export const latestSeries: TController = async (req, res) => {
         const { page = 0 } = req.params; // Mengambil nilai page dari params
 
         const axiosRequest = await axios.get(
-            `${process.env.ND_URL}/latest-series${
-                Number(page) > 1 ? `/page/${page}` : ''
-            }`,
+            `${process.env.ND_URL}/latest-series/page/${page}`,
             {
                 httpsAgent: new https.Agent({
                     rejectUnauthorized: false, // Ini akan mengabaikan verifikasi SSL

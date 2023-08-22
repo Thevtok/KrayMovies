@@ -22,9 +22,7 @@ export const latestMovies: TController = async (req, res) => {
         };
 
         // Membuat URL dengan parameter page
-        const url = `${process.env.LK21_URL}/latest${
-            Number(page) > 1 ? `/page/${page}` : ''
-        }`;
+        const url = `${process.env.LK21_URL}/latest/page/${page}`;
 
         // Set opsi untuk mengabaikan verifikasi SSL
         const axiosRequest = await axios.get(url, {
