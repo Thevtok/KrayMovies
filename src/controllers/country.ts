@@ -4,6 +4,7 @@ import { userAgent } from './config';
 import { NextFunction as Next, Request, Response } from 'express';
 import { scrapeSetOfCountries } from '@/scrapers/country';
 import { scrapeMovies } from '@/scrapers/movie';
+import { scrapeSeries } from '@/scrapers/series';
 
 type TController = (req: Request, res: Response, next?: Next) => Promise<void>;
 
@@ -103,7 +104,7 @@ export const seriesByCountry: TController = async (req, res) => {
             }
         );
 
-        const payload = await scrapeMovies(req, axiosRequest);
+        const payload = await scrapeSeries(req, axiosRequest);
 
         res.status(200).json(payload);
     } catch (err) {
