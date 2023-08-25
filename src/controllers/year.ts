@@ -67,7 +67,7 @@ export const moviesByYear: TController = async (req, res) => {
             }
         );
 
-        const payload = await scrapeSeries(req, axiosRequest);
+        const payload = await scrapeMovies(req, axiosRequest);
 
         res.status(200).json(payload);
     } catch (err) {
@@ -103,7 +103,7 @@ export const seriesByYear: TController = async (req, res) => {
             }
         );
 
-        const payload = await scrapeMovies(req, axiosRequest);
+        const payload = await scrapeSeries(req, axiosRequest);
 
         res.status(200).json(payload);
     } catch (err) {
